@@ -9,12 +9,15 @@ import { fetchNotes } from '../../lib/api';
 import NoteList from '../../components/NoteList/NoteList';
 import Pagination from '../../components/Pagination/Pagination';
 import SearchBox from '../../components/SearchBox/SearchBox';
+import Modal from '../../components/Modal/Modal';
+import NoteForm from '../../components/NoteForm/NoteForm';
 
 const PER_PAGE = 12;
 
 export default function NotesClient() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const debounced = useDebouncedCallback((value: string) => {
     setSearch(value);
@@ -34,6 +37,10 @@ export default function NotesClient() {
     <>
       <SearchBox onSearch={debounced} />
 
+      <button onClick={() => setIsModalOpen(true)}>
+        Create note +
+      </button>
+
       {data && data.notes.length > 0 && (
         <NoteList notes={data.notes} />
       )}
@@ -44,6 +51,12 @@ export default function NotesClient() {
           currentPage={page}
           onPageChange={setPage}
         />
+      )}
+
+      {isModalOpen && (
+        <Modal onClose={() => setIsModalOpen(false)}>
+          <NoteForm onClose={() => setIsModalOpen(false)} />
+        </Modal>
       )}
     </>
   );
