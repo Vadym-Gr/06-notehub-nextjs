@@ -36,12 +36,12 @@ export const createNote = async (data: {
   title: string;
   content: string;
   tag: NoteTag;
-}) => {
-  const res = await api.post('/notes', data);
+}): Promise<Note> => {
+  const res: AxiosResponse<Note> = await api.post<Note>('/notes', data);
   return res.data;
 };
 
-export const deleteNote = async (id: string) => {
-  const res = await api.delete(`/notes/${id}`);
+export const deleteNote = async (id: string): Promise<Note> => {
+  const res: AxiosResponse<Note> = await api.delete<Note>(`/notes/${id}`);
   return res.data;
 };
